@@ -1,5 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
+import { Camera, CameraDevice } from "react-native-vision-camera";
 
 export type ThemesProps = "system" | "light" | "dark" | "pureBlack";
 export type ThemeProps = {
@@ -31,17 +32,26 @@ export const themes: ThemeProps[] = [
   },
 ];
 
+interface CameraProps {
+  device: CameraDevice;
+}
 interface AppearanceProps {
   theme: ThemeProps;
 }
 
 interface SettingsProps {
   appearance: AppearanceProps;
+  camera: CameraProps;
 }
+
+const device = Camera.getAvailableCameraDevices()[0];
 
 const initialState: SettingsProps = {
   appearance: {
     theme: themes[0],
+  },
+  camera: {
+    device,
   },
 };
 
@@ -55,9 +65,12 @@ export const settingsSlice = createSlice({
     ) => {
       appearance.theme = payload.theme;
     },
+    setcameraDevice: ({ camera }, { payload }: PayloadAction<CameraDevice>) => {
+      camera.device = payload;
+    },
   },
 });
 
-export const { setappearance } = settingsSlice.actions;
+export const { setappearance, setcameraDevice } = settingsSlice.actions;
 
 export default settingsSlice.reducer;
