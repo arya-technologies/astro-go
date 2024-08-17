@@ -3,17 +3,15 @@ import { persistor, store } from "@/features/store";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as NavigationBar from "expo-navigation-bar";
 import { Stack } from "expo-router/stack";
-import { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator } from "react-native-paper";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
-export default function Layout() {
-  useEffect(() => {
-    NavigationBar.setPositionAsync("absolute");
-    NavigationBar.setBackgroundColorAsync("#00000000");
-  }, []);
+NavigationBar.setPositionAsync("absolute");
+NavigationBar.setBackgroundColorAsync("#00000000");
 
+export default function Layout() {
   return (
     <Provider store={store}>
       <PersistGate loading={<ActivityIndicator />} persistor={persistor}>
@@ -22,13 +20,15 @@ export default function Layout() {
             icon: (props: any) => <Ionicons {...props} />,
           }}
         >
-          <Stack
-            screenOptions={{
-              animation: "default",
-              headerShown: false,
-            }}
-            initialRouteName="/"
-          />
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <Stack
+              screenOptions={{
+                animation: "default",
+                headerShown: false,
+              }}
+              initialRouteName="/"
+            />
+          </GestureHandlerRootView>
         </Material3ThemeProvider>
       </PersistGate>
     </Provider>
