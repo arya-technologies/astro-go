@@ -4,6 +4,7 @@ import { RootState } from "@/features/store";
 import { useAppState } from "@react-native-community/hooks";
 import { useState } from "react";
 import { View } from "react-native";
+import { Surface, ToggleButton } from "react-native-paper";
 import Reanimated, {
   interpolate,
   useAnimatedProps,
@@ -17,6 +18,10 @@ import {
   useCameraPermission,
 } from "react-native-vision-camera";
 import { useSelector } from "react-redux";
+import Finder from "@/components/Finder";
+import Controls from "@/components/Controls";
+
+type Modes = "finderCam" | "controls";
 
 const AnimatedCamera = Reanimated.createAnimatedComponent(Camera);
 Reanimated.addWhitelistedNativeProps({ zoom: true, exposure: true });
@@ -24,9 +29,11 @@ Reanimated.addWhitelistedNativeProps({ zoom: true, exposure: true });
 export default function index() {
   const { colors } = useAppTheme();
   const { top, bottom } = useSafeAreaInsets();
+  const { hasPermission, requestPermission } = useCameraPermission();
   const { device } = useSelector((state: RootState) => state.settings.camera);
   const format = useCameraFormat(device, [{ photoAspectRatio: 1 / 1 }]);
-  const { hasPermission, requestPermission } = useCameraPermission();
+
+  const [mode, setmode] = useState<Modes>("controls");
 
   const appState = useAppState();
   const isActive = appState === "active";
@@ -62,7 +69,7 @@ export default function index() {
 
   return (
     <View
-      className="h-full flex-1"
+      className="h-full flex-1 space-y-2"
       style={{
         backgroundColor: colors.surface,
         paddingTop: top,
@@ -83,7 +90,18 @@ export default function index() {
           className="w-[95vw] h-[95vw] my-[5vw]"
         />
       </View>
-      <View className="flex-grow"></View>
+      <Surface elevation={2} className="w-full rounded-full">
+        <ToggleButton.Row
+          value={mode}
+          onValueChange={(value) => setmode(value)}
+        >
+          <ToggleButton icon="locate" value="finderCam" />
+          <ToggleButton icon="planet" value="controls" />
+        </ToggleButton.Row>
+      </Surface>
+      <View className="flex-grow">
+        {mode === "finderCam" ? <Finder /> : <Controls />}
+      </View>
     </View>
   );
 }
