@@ -34,6 +34,12 @@
     "plugins": [
       "expo-router",
       [
+        "react-native-wifi-reborn",
+        {
+          "fineLocationPermission": false
+        }
+      ],
+      [
         "react-native-vision-camera",
         {
           "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera."
