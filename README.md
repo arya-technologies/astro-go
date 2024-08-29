@@ -1,3 +1,3 @@
-# Astro Go t
+# Astro Go
 
 ## Open Source DIY Goto mount Controller
