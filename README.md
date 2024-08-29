@@ -1,3 +1,3 @@
 # Astro Go
 
-## Materual Design Controller for OnStep
+## Material Design Controller for OnStep
