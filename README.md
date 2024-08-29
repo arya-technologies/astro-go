@@ -1,3 +1,3 @@
 # Astro Go
 
-## Open Source DIY Goto mount Controller
+## Materual Design Controller for OnStep
